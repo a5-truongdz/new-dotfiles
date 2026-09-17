@@ -1,0 +1,1 @@
+/home/tr43212/.emacs.d/init.el
