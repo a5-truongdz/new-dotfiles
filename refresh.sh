@@ -9,6 +9,7 @@ cp -r ~/.config/conky/ .
 cp -r ~/.config/dunst/ .
 cp -r ~/.config/polybar/ .
 cp -r ~/.config/qtile/ .
+cp -r ~/.config/picom/ .
 
 cp -r ~/Scripts/ .
 cp -r ~/Documents/wallpaper.jpeg ./wallpaper.jpeg
