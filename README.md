@@ -12,3 +12,5 @@
 # settings
 - unified kernel image
 - x11
+- low dpi stuff
+- systemd idk
