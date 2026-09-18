@@ -4,8 +4,6 @@ xrdb -merge ~/.Xresources
 
 polybar top &
 conky -c ~/.config/conky/clock.conf &
-conky -c ~/.config/conky/qtile.conf &
-conky -c ~/.config/conky/monitor.conf &
 
 nm-applet &
 copyq &

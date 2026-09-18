@@ -1,5 +1,8 @@
 #!/bin/sh
 
+PWD=$(pwd)
+cd ~/.local/new-dotfiles
+
 cp -r ~/.config/conky/ ./conky/
 cp -r ~/.config/dunst/ ./dunst/
 cp -r ~/.config/polybar/ ./polybar/
@@ -16,3 +19,5 @@ cp -r ~/.emacs.d/snippets/ ./.emacs.d/snippets/
 git add .
 git commit -m "updet"
 git push
+
+cd $PWD
