@@ -36,7 +36,7 @@
   (message "If it works, don't touch it."))
 
 ;; Fonts
-(add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font Mono-11"))
+(add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font Mono-10"))
 
 ;; Required packages for this config
 (load-packages 'company

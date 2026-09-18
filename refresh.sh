@@ -10,6 +10,8 @@ cp -r ~/.config/qtile/ ./qtile/
 
 cp -r ~/Scripts/ ./Scripts/
 cp -r ~/Documents/wallpaper.jpeg ./wallpaper.jpeg
+cp -r ~/.Xresources ./.Xresources
+cp -r /etc/environment ./etc/environment
 
 cp -r ~/.emacs.d/init.el ./.emacs.d/init.el
 cp -r ~/.emacs.d/custom.el ./.emacs.d/custom.el
