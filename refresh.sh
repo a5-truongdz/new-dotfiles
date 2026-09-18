@@ -18,8 +18,8 @@ cp -r /etc/mkinitcpio.d/linux-zen.preset ./etc/mkinitcpio.d/linux-zen-preset
 
 cp -r ~/.emacs.d/init.el ./.emacs.d/init.el
 cp -r ~/.emacs.d/custom.el ./.emacs.d/custom.el
-cp -r ~/.emacs.d/custom-packages/ ./.emacs.d/custom-packages/
-cp -r ~/.emacs.d/snippets/ ./.emacs.d/snippets/
+cp -r ~/.emacs.d/custom-packages/ ./.emacs.d/
+cp -r ~/.emacs.d/snippets/ ./.emacs.d/
 
 git add .
 git commit -m "updet"
