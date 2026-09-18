@@ -1,18 +1,9 @@
 #!/bin/sh
 
-xrandr --output "LVDS1" --scale 1.15x1.15
 xrdb -merge ~/.Xresources 
 
-(
-    sleep 2
-
-    polybar bottom &
-    polybar top &
-
-    conky -c ~/.config/conky/clock.conf &
-    conky -c ~/.config/conky/qtile.conf &
-    conky -c ~/.config/conky/monitor.conf &
-)
+polybar top &
+conky -c ~/.config/conky/clock.conf &
 
 nm-applet &
 copyq &

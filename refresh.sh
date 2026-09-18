@@ -5,12 +5,12 @@ set -xe
 PWD=$(pwd)
 cd ~/.local/new-dotfiles
 
-cp -r ~/.config/conky/ ./conky/
-cp -r ~/.config/dunst/ ./dunst/
-cp -r ~/.config/polybar/ ./polybar/
-cp -r ~/.config/qtile/ ./qtile/
+cp -r ~/.config/conky/ .
+cp -r ~/.config/dunst/ .
+cp -r ~/.config/polybar/ .
+cp -r ~/.config/qtile/ .
 
-cp -r ~/Scripts/ ./Scripts/
+cp -r ~/Scripts/ .
 cp -r ~/Documents/wallpaper.jpeg ./wallpaper.jpeg
 cp -r ~/.Xresources ./.Xresources
 cp -r /etc/environment ./etc/environment
