@@ -191,6 +191,12 @@
 (setq tab-width 4)
 (setq mi/roast-mode t)
 
+;; comint for compile
+(defun compile-with-comint ()
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively 'compile)))
+
 ;; Disable annoying keys
 (global-unset-key (kbd "M-<down-mouse-1>"))
 (global-unset-key (kbd "M-<mouse-1>"))
@@ -214,6 +220,7 @@
 (global-set-key (kbd "C-s") 'isearch-forward)
 (global-set-key (kbd "M-<left>") 'backward-char)    ;; This is required for shift-selection to works
 (global-set-key (kbd "M-<right>") 'forward-char)
+(global-set-key (kbd "C-c c") 'compile-with-comint)
 
 ;; Sometime my hand slips
 (global-set-key (kbd "C-x s") 'save-buffer)
