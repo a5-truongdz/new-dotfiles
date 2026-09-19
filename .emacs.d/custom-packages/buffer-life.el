@@ -3,7 +3,7 @@
 (defvar-local bl/--birthday nil)
 (defvar bl/--timer nil)
 
-(defvar bl/tracked-despite-being-system-buffers '("*scratch*" "*compilation*"))
+(defvar bl/tracked-despite-being-system-buffers '("*scratch*" "*compilation*" "*Async Shell Command*"))
 
 (defun bl/--system-buffer-p (buffer)
   (let ((name (buffer-name buffer)))
