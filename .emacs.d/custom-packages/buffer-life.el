@@ -1,8 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
+;; Tracks buffer age.
+
 (defvar-local bl/--birthday nil)
 (defvar bl/--timer nil)
 
+;; Dont ask why the name have to be this long
 (defvar bl/tracked-despite-being-system-buffers '("*scratch*" "*compilation*" "*Async Shell Command*"))
 
 (defun bl/--system-buffer-p (buffer)
@@ -57,8 +60,8 @@
       (message "%s" result))
     result))
 
-(mapc #'bl/--mark-buffer (buffer-list))
-(add-hook 'buffer-list-update-hook #'bl/--mark-buffer)
+(mapc 'bl/--mark-buffer (buffer-list))
+(add-hook 'buffer-list-update-hook 'bl/--mark-buffer)
 (add-to-list 'global-mode-string '(:eval (bl/--age-mode-line)))
 
 (when (timerp bl/--timer)

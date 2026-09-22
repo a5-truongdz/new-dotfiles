@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
-;; For someone who's tired of Emacs' built-in indentation system,
-;; It sucks.
+;; For someone tired of Emacs' indentation system.
+;; It sucks. I hate it.
 
 (defvar-local mi/tab-width 4)
 (defvar mi/roast-mode nil)

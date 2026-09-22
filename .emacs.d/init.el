@@ -50,8 +50,7 @@
                'zig-mode
                'go-mode
                'nerd-icons-dired
-               'nord-theme
-               'magit)
+               'nord-theme)
 
 (add-to-list 'load-path "~/.emacs.d/custom-packages/")    ;; Custom packages live here
 
@@ -166,6 +165,10 @@
       (when (search-forward "\0" (min (+ (point-min) 1024) (point-max)) t)
         (hexl-mode)))))
 (add-hook 'find-file-hook 'detect-binary-file)
+
+;; PATH for compile
+(add-to-list 'exec-path "~/.local/bin/")
+(setenv "PATH" (concat (expand-file-name "~/.local/bin") ":" (getenv "PATH")))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))

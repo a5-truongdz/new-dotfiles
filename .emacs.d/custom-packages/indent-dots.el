@@ -1,5 +1,8 @@
 ;; -*- lexical-binding: t -*-
 
+;; Stupid Emacs force me to add docstrings.
+;; Anyways self-explanatory.
+
 (defgroup indent-dots nil
   "Customization group for indent-dots."
   :group 'convenience
