@@ -156,6 +156,9 @@
 ;; buffer-life.el (custom package)
 (require 'buffer-life)
 
+;; git-modeline.el (custom package)
+(require 'git-modeline)
+
 ;; yasnippet
 (yas-global-mode 1)
 
