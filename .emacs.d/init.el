@@ -65,6 +65,16 @@
 (setq emacs-pets-scale 0.9)
 (emacs-pets-mode)
 
+;; https://github.com/richardhbtz/emacs-rpc
+(add-to-list 'load-path "~/.emacs.d/custom-packages/emacs-presence/")
+(require 'presence)
+(setq presence-refresh-rate 10)
+(setq presence-idle-message "Touching grass")
+;; (setq presence-idle-timer 1)
+(add-to-list 'presence-mode-icon-alist '(simpc-mode . "cpp"))
+(add-to-list 'presence-mode-text-alist '(simpc-mode . "C++"))
+(presence-mode)
+
 ;; indent-dots (custom package)
 (require 'indent-dots)    ;; Show indentation as dots
 (add-hook 'prog-mode-hook 'indent-dots-mode)
@@ -73,7 +83,12 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
-  (define-key company-active-map (kbd "<escape>") 'company-abort))
+  (define-key company-active-map (kbd "<escape>") 'company-abort)
+  (defun company-detect-icons-margin-custom (candidate selected)
+    (concat
+      (company-detect-icons-margin candidate selected)
+      " "))
+  (setq company-format-margin-function 'company-detect-icons-margin-custom))
 (add-hook 'simpc-mode-hook (lambda ()
                              (setq-local company-backends
                                          '((company-capf company-yasnippet)))))

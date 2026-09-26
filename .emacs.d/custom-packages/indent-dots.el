@@ -41,7 +41,7 @@
 ;;;###autoload
 (define-minor-mode indent-dots-mode
   "Toggle indent-dots mode."
-  :lighter " ·"
+  :lighter " ·"  ;; A nice thing abt this is it kinda acts like a separator in the mode line
   :group 'indent-dots
   (if indent-dots-mode
       (progn
