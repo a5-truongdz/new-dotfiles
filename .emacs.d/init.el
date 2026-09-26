@@ -208,6 +208,7 @@
 (setq eldoc-box-max-pixel-height 400)
 (setq global-auto-revert-mode-non-file-buffer t)
 (setq auto-revert-verbose t)
+(setq vc-handled-backends nil)
 (setq zig-format-on-save nil)
 (setq tab-width 4)
 (setq mi/roast-mode t)
