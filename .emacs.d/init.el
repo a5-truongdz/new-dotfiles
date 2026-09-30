@@ -50,7 +50,8 @@
                'zig-mode
                'go-mode
                'nerd-icons-dired
-               'nord-theme)
+               'nord-theme
+               'dired-preview)
 
 (add-to-list 'load-path "~/.emacs.d/custom-packages/")    ;; Custom packages live here
 
@@ -175,13 +176,23 @@
             (auto-revert-mode)
             (nerd-icons-dired-mode)))
 
+;; dired-preview
+(setq dired-preview-delay 0)
+(dired-preview-global-mode 1)
+
 ;; Auto use hexl for binary files
 (defun detect-binary-file ()
-  (unless (derived-mode-p 'hexl-mode)
+  (unless (or (derived-mode-p 'hexl-mode)
+              (image-type-available-p
+               (image-type-from-file-name buffer-file-name)))
     (save-excursion
       (goto-char (point-min))
-      (when (search-forward "\0" (min (+ (point-min) 1024) (point-max)) t)
+      (when (search-forward "\0"
+                            (min (+ (point-min) 1024) (point-max))
+                            t)
         (hexl-mode)))))
+
+(add-hook 'find-file-hook #'detect-binary-file)
 (add-hook 'find-file-hook 'detect-binary-file)
 
 ;; PATH for compile

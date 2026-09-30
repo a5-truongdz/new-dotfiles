@@ -131,7 +131,9 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),
         Match(title="pinentry"),
         Match(wm_class="geometrydash.exe"),
-        Match(wm_class="oneko")
+        Match(wm_class="oneko"),
+        Match(wm_class="spectacle"),
+        Match(title="Spectacle")
     ],
     border_width=2,
     border_focus=frost,
