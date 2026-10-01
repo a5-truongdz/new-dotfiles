@@ -39,8 +39,7 @@
 (add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font Mono-10"))
 
 ;; Required packages for this config
-(load-packages 'company
-               'all-the-icons
+(load-packages 'all-the-icons
                'multiple-cursors
                'ligature
                'eldoc-box
@@ -49,9 +48,13 @@
                'hl-todo
                'zig-mode
                'go-mode
+               'nerd-icons
                'nerd-icons-dired
                'nord-theme
-               'dired-preview)
+               'dired-preview
+               'corfu
+               'nerd-icons-corfu
+               'cape)
 
 (add-to-list 'load-path "~/.emacs.d/custom-packages/")    ;; Custom packages live here
 
@@ -80,19 +83,22 @@
 (require 'indent-dots)    ;; Show indentation as dots
 (add-hook 'prog-mode-hook 'indent-dots-mode)
 
-;; company
-(add-hook 'after-init-hook 'global-company-mode)
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
-  (define-key company-active-map (kbd "<escape>") 'company-abort)
-  (defun company-detect-icons-margin-custom (candidate selected)
-    (concat
-      (company-detect-icons-margin candidate selected)
-      " "))
-  (setq company-format-margin-function 'company-detect-icons-margin-custom))
-(add-hook 'simpc-mode-hook (lambda ()
-                             (setq-local company-backends
-                                         '((company-capf company-yasnippet)))))
+;; corfu
+(add-hook 'after-init-hook 'global-corfu-mode)
+(with-eval-after-load 'corfu
+  (setq corfu-auto t)
+  (setq corfu-auto-delay 0.1)
+  (setq corfu-auto-prefix 1)
+  (define-key corfu-map (kbd "<tab>") 'corfu-complete)
+  (define-key corfu-map (kbd "<escape>") 'corfu-quit)
+  (add-to-list 'corfu-margin-formatters 'nerd-icons-corfu-formatter))
+(add-hook 'simpc-mode-hook
+          (lambda ()
+            (when (fboundp 'cape-super-capf)
+              (setq-local completion-at-point-functions
+                          (list (cape-super-capf
+                                 'elisp-completion-at-point
+                                 'yasnippet-capf))))))
 
 ;; ligature
 (ligature-set-ligatures 'prog-mode
@@ -101,12 +107,17 @@
 
 ;; eglot
 (with-eval-after-load 'eglot
+  (setq eglot-autoshutdown t)
+  (setq eglot-connect-timeout 600)
+  (setq eglot-sync-connect 0)
+  (setq eglot-max-file-watches 20000)
   (add-to-list 'eglot-server-programs '(simpc-mode . ("clangd" "--background-index" "--header-insertion=never")))
   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
   (add-to-list 'eglot-stay-out-of 'company-backends)
   (add-to-list 'eglot-stay-out-of 'flymake)
   (add-hook 'zig-mode-hook
             (lambda ()
+              (setq zig-format-on-save nil)
               (add-to-list 'eglot-ignored-server-capabilities :documentFormattingProvider)
               (add-to-list 'eglot-ignored-server-capabilities :documentRangeFormattingProvider)))
 
@@ -116,6 +127,8 @@
               (add-to-list 'eglot-ignored-server-capabilities :documentRangeFormattingProvider))))
 
 ;; Disable flymake + set up eldoc
+(setq eldoc-box-max-pixel-width 600)
+(setq eldoc-box-max-pixel-height 400)
 (add-hook 'eglot-managed-mode-hook
           (lambda ()
             (flymake-mode -1)
@@ -138,8 +151,7 @@
 ;; manual-indentation.el (custom package)
 ;; Provides mi/*
 (require 'manual-indentation)
-
-;; Tab width
+(setq mi/roast-mode t)
 (setq mi/tab-width 4)
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
@@ -171,6 +183,8 @@
 (setq-default cursor-type '(hbar . 1))
 
 ;; Dired
+(setq dired-kill-when-opening-new-dired-buffer t)
+(setq dired-listing-switches "-ahgo --group-directories-first")
 (add-hook 'dired-mode-hook
           (lambda ()
             (auto-revert-mode)
@@ -191,9 +205,15 @@
                             (min (+ (point-min) 1024) (point-max))
                             t)
         (hexl-mode)))))
-
 (add-hook 'find-file-hook #'detect-binary-file)
 (add-hook 'find-file-hook 'detect-binary-file)
+
+;; comint for compile
+(setq compilation-scroll-output t)
+(defun compile-with-comint ()
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively 'compile)))
 
 ;; PATH for compile
 (add-to-list 'exec-path "~/.local/bin/")
@@ -204,31 +224,13 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/" t)))
 (setq lock-file-name-transforms '((".*" "~/.emacs.d/auto-saves/" t)))
 (setq echo-keystrokes 0.01)
-(setq company-idle-delay 0)
-(setq company-minimum-prefix-length 1)
 (setq inhibit-startup-screen t)
-(setq eglot-autoshutdown t)
 (setq use-short-answers t)
-(setq eglot-connect-timeout 600)
-(setq eglot-sync-connect 0)
-(setq eglot-max-file-watches 20000)
-(setq dired-kill-when-opening-new-dired-buffer t)
-(setq dired-listing-switches "-ahgo --group-directories-first")
 (setq warning-minimum-level :error)
-(setq eldoc-box-max-pixel-width 600)
-(setq eldoc-box-max-pixel-height 400)
-(setq global-auto-revert-mode-non-file-buffer t)
 (setq auto-revert-verbose t)
-(setq vc-handled-backends nil)
-(setq zig-format-on-save nil)
+(setq global-auto-revert-mode-non-file-buffer t)
 (setq tab-width 4)
-(setq mi/roast-mode t)
-
-;; comint for compile
-(defun compile-with-comint ()
-  (interactive)
-  (let ((current-prefix-arg '(4)))
-    (call-interactively 'compile)))
+(setq vc-handled-backends nil)
 
 ;; Disable annoying keys
 (global-unset-key (kbd "M-<down-mouse-1>"))
@@ -301,4 +303,3 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (setq gc-cons-threshold (* 16 1024 1024))))
-(put 'downcase-region 'disabled nil)

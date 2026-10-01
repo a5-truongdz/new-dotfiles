@@ -13,6 +13,7 @@ alt = "mod1"
 # Binaries
 terminal = "konsole"
 rofi = os.path.expanduser("~/Scripts/rofi.sh")
+tt = os.path.expanduser("~/Scripts/touchpad-toggle.sh")
 
 # Colors
 polar_night = "#2e3440"
@@ -59,6 +60,9 @@ keys = [
 
     # Ctrl+Space: Launch rofi
     Key(["control"], "space", lazy.spawn(rofi, shell=True)),
+
+    # Ctrl+Mod+T: Toggle touchpad
+    Key(["control", mod], "t", lazy.spawn(tt, shell=True)),
 
     # Mod+L: Lock the screen
     Key([mod], "l", lazy.spawn("betterlockscreen -l blur --off 300")),
