@@ -9,11 +9,11 @@
 '("5a4cdc4365122d1a17a7ad93b6e3370ffe95db87ed17a38a94713f6ffe0d8ceb"
   default))
  '(package-selected-packages
-'(all-the-icons cape corfu dired-preview eldoc-box emms go-mode
-                go-mode2 hl-todo kotlin-ts-mode ligature-pragmatapro
-                multiple-cursors nerd-icons-corfu nerd-icons-dired
-                nord-theme vc-git-mode-line vterm yasnippet
-                yasnippet-capf zig-mode))
+'(all-the-icons cape corfu eldoc-box emms go-mode go-mode2 hl-todo
+                kotlin-ts-mode ligature-pragmatapro multiple-cursors
+                nerd-icons-corfu nerd-icons-dired nord-theme
+                vc-git-mode-line vterm yasnippet yasnippet-capf
+                zig-mode))
  '(package-vc-selected-packages
 '((emacs-pets :url "https://github.com/harrybournis/emacs-pets.git"
               :branch "main"))))

@@ -31,10 +31,6 @@
 (blink-cursor-mode -1)
 (column-number-mode 1)
 
-;; Change the welcome message
-(defun display-startup-echo-area-message ()
-  (message "If it works, don't touch it."))
-
 ;; Fonts
 (add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font Mono-10"))
 
@@ -52,7 +48,6 @@
                'nerd-icons
                'nerd-icons-dired
                'nord-theme
-               'dired-preview
                'corfu
                'nerd-icons-corfu
                'cape)
@@ -176,10 +171,6 @@
 ;; git-modeline.el (custom package)
 (require 'git-modeline)
 
-;; better-scroll.el (custom-package)
-;; Provides bs/*
-(require 'better-scroll)
-
 ;; hl-todo
 (global-hl-todo-mode 1)
 
@@ -194,10 +185,6 @@
           (lambda ()
             (auto-revert-mode)
             (nerd-icons-dired-mode)))
-
-;; dired-preview
-(setq dired-preview-delay 0)
-(dired-preview-global-mode 1)
 
 ;; Auto use hexl for binary files
 (defun detect-binary-file ()
@@ -220,6 +207,10 @@
     (call-interactively 'compile)))
 (add-to-list 'exec-path "~/.local/bin/")
 (setenv "PATH" (concat (expand-file-name "~/.local/bin") ":" (getenv "PATH")))
+
+;; Scrolling
+(setq scroll-margin 3)
+(setq scroll-conservatively 101)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -298,12 +289,6 @@
           (lambda ()
             (local-set-key (kbd "<backspace>") 'mi/delete-char-or-dedent)
             (local-set-key (kbd "<return>") 'mi/insert-newline-and-indent)))
-
-;; better-scroll
-(global-set-key (kbd "<up>") 'bs/previous-line)
-(global-set-key (kbd "<down>") 'bs/next-line)
-(global-set-key (kbd "<prior>") 'pixel-scroll-interpolate-up)
-(global-set-key (kbd "<next>") 'pixel-scroll-interpolate-down)
 
 (load custom-file)
 
