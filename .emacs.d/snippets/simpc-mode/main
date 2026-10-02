@@ -4,8 +4,14 @@
 #include <bits/stdc++.h>
 #define el '\n'
 #define pb push_back
+#define P 1,1,n
+#define ti 2*i
+#define ti1 2*i+1
+#define lr2 l+(r-l)/2
+#define lm l,mid
+#define mr mid+1,r
 using namespace std;
-typedef long long ll;
+using ll = long long;
 
 $0
 

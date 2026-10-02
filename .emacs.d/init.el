@@ -44,6 +44,7 @@
                'ligature
                'eldoc-box
                'yasnippet
+               'yasnippet-capf
                'kotlin-ts-mode
                'hl-todo
                'zig-mode
@@ -83,7 +84,15 @@
 (require 'indent-dots)    ;; Show indentation as dots
 (add-hook 'prog-mode-hook 'indent-dots-mode)
 
+;; yasnippet
+(yas-global-mode 1)
+
 ;; corfu
+(defun completion-at-point-functions-custom ()
+  (setq-local completion-at-point-functions
+              (list (cape-capf-super
+                      'eglot-completion-at-point
+                      'yasnippet-capf))))
 (add-hook 'after-init-hook 'global-corfu-mode)
 (with-eval-after-load 'corfu
   (setq corfu-auto t)
@@ -92,13 +101,8 @@
   (define-key corfu-map (kbd "<tab>") 'corfu-complete)
   (define-key corfu-map (kbd "<escape>") 'corfu-quit)
   (add-to-list 'corfu-margin-formatters 'nerd-icons-corfu-formatter))
-(add-hook 'simpc-mode-hook
-          (lambda ()
-            (when (fboundp 'cape-super-capf)
-              (setq-local completion-at-point-functions
-                          (list (cape-super-capf
-                                 'elisp-completion-at-point
-                                 'yasnippet-capf))))))
+(add-hook 'simpc-mode-hook 'completion-at-point-functions-custom)
+(add-hook 'eglot-managed-mode-hook 'completion-at-point-functions-custom)
 
 ;; ligature
 (ligature-set-ligatures 'prog-mode
@@ -172,8 +176,9 @@
 ;; git-modeline.el (custom package)
 (require 'git-modeline)
 
-;; yasnippet
-(yas-global-mode 1)
+;; better-scroll.el (custom-package)
+;; Provides bs/*
+(require 'better-scroll)
 
 ;; hl-todo
 (global-hl-todo-mode 1)
@@ -205,17 +210,14 @@
                             (min (+ (point-min) 1024) (point-max))
                             t)
         (hexl-mode)))))
-(add-hook 'find-file-hook #'detect-binary-file)
 (add-hook 'find-file-hook 'detect-binary-file)
 
-;; comint for compile
+;; compile
 (setq compilation-scroll-output t)
 (defun compile-with-comint ()
   (interactive)
   (let ((current-prefix-arg '(4)))
     (call-interactively 'compile)))
-
-;; PATH for compile
 (add-to-list 'exec-path "~/.local/bin/")
 (setenv "PATH" (concat (expand-file-name "~/.local/bin") ":" (getenv "PATH")))
 
@@ -255,7 +257,7 @@
 (global-set-key (kbd "C-s") 'isearch-forward)
 (global-set-key (kbd "M-<left>") 'backward-char)    ;; This is required for shift-selection to works
 (global-set-key (kbd "M-<right>") 'forward-char)
-(global-set-key (kbd "C-c c") 'compile-with-comint)
+(global-set-key (kbd "C-c C-c") 'compile-with-comint)
 
 ;; Sometime my hand slips
 (global-set-key (kbd "C-x s") 'save-buffer)
@@ -296,6 +298,12 @@
           (lambda ()
             (local-set-key (kbd "<backspace>") 'mi/delete-char-or-dedent)
             (local-set-key (kbd "<return>") 'mi/insert-newline-and-indent)))
+
+;; better-scroll
+(global-set-key (kbd "<up>") 'bs/previous-line)
+(global-set-key (kbd "<down>") 'bs/next-line)
+(global-set-key (kbd "<prior>") 'pixel-scroll-interpolate-up)
+(global-set-key (kbd "<next>") 'pixel-scroll-interpolate-down)
 
 (load custom-file)
 
