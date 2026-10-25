@@ -31,8 +31,13 @@
 (blink-cursor-mode -1)
 (column-number-mode 1)
 
-;; Fonts
+;; Customize
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+;; Fonts and alpha
 (add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font Mono-10"))
+(add-to-list 'default-frame-alist '(alpha-background . 90))
 
 ;; Required packages for this config
 (load-packages 'all-the-icons
@@ -69,7 +74,7 @@
 (add-to-list 'load-path "~/.emacs.d/custom-packages/emacs-presence/")
 (require 'presence)
 (setq presence-refresh-rate 10)
-(setq presence-idle-message "Touching grass")
+(setq presence-idle-message "Finding porn to watch...")
 ;; (setq presence-idle-timer 1)
 (add-to-list 'presence-mode-icon-alist '(simpc-mode . "cpp"))
 (add-to-list 'presence-mode-text-alist '(simpc-mode . "C++"))
@@ -93,6 +98,8 @@
   (setq corfu-auto t)
   (setq corfu-auto-delay 0.1)
   (setq corfu-auto-prefix 1)
+  (setq corfu-popupinfo-delay '(0.1 . 0.1))
+  (corfu-popupinfo-mode -1)
   (define-key corfu-map (kbd "<tab>") 'corfu-complete)
   (define-key corfu-map (kbd "<escape>") 'corfu-quit)
   (add-to-list 'corfu-margin-formatters 'nerd-icons-corfu-formatter))
@@ -212,7 +219,6 @@
 (setq scroll-margin 3)
 (setq scroll-conservatively 101)
 
-(setq custom-file "~/.emacs.d/custom.el")
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/" t)))
 (setq lock-file-name-transforms '((".*" "~/.emacs.d/auto-saves/" t)))
@@ -289,8 +295,6 @@
           (lambda ()
             (local-set-key (kbd "<backspace>") 'mi/delete-char-or-dedent)
             (local-set-key (kbd "<return>") 'mi/insert-newline-and-indent)))
-
-(load custom-file)
 
 ;; Restore GC threshold
 (add-hook 'emacs-startup-hook

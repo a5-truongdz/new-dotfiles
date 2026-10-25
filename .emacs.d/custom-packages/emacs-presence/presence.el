@@ -649,7 +649,8 @@ If there is no 'previous' buffer attempt to find a non-boring buffer to initiali
   "Start sending periodic update to Discord Rich Presence."
   (unless presence--update-presence-timer
     (unless presence-quiet
-      (message "presence: connected. starting updates"))
+      (message "presence: connected. starting updates")
+      (display-startup-echo-area-message))
     ;;Start sending updates now that we've heard from discord
     (setq presence--last-known-position -1
           presence--last-known-buffer-name ""

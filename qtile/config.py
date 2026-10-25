@@ -11,7 +11,7 @@ mod = "mod4"
 alt = "mod1"
 
 # Binaries
-terminal = "konsole"
+terminal = "cterm"
 rofi = os.path.expanduser("~/Scripts/rofi.sh")
 tt = os.path.expanduser("~/Scripts/touchpad-toggle.sh")
 
@@ -159,7 +159,7 @@ keys.extend([
 bring_front_click = "floating_only"
 follow_mouse_focus = True
 floats_kept_above = False
-cursor_warp = True
+cursor_warp = False
 
 # Hooks
 lock_file = "/tmp/qtile_lock_restart"

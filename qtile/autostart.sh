@@ -3,7 +3,7 @@
 xrdb -merge ~/.Xresources 
 
 polybar top &
-conky -c ~/.config/conky/clock.conf &
+# conky -c ~/.config/conky/clock.conf &
 
 nm-applet &
 copyq &
