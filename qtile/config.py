@@ -59,7 +59,7 @@ keys = [
     Key(["control", mod], "r", lazy.reload_config()),
 
     # Ctrl+Space: Launch rofi
-    Key(["control"], "space", lazy.spawn(rofi, shell=True)),
+    # Key(["control"], "space", lazy.spawn(rofi, shell=True)),
 
     # Ctrl+Mod+T: Toggle touchpad
     Key(["control", mod], "t", lazy.spawn(tt, shell=True)),
@@ -101,11 +101,11 @@ for i, name in enumerate(group_name):
 # Layout
 layouts = [
     layout.Bsp(
-        border_width=2,
         margin=10,
         border_focus=frost,
         border_normal=polar_night,
-        border_on_single=True
+        border_on_single=True,
+        border_width=2
     )
 ]
 
@@ -137,7 +137,8 @@ floating_layout = layout.Floating(
         Match(wm_class="geometrydash.exe"),
         Match(wm_class="oneko"),
         Match(wm_class="spectacle"),
-        Match(title="Spectacle")
+        Match(title="Spectacle"),
+        Match(wm_class="albert")
     ],
     border_width=2,
     border_focus=frost,
@@ -159,10 +160,27 @@ keys.extend([
 bring_front_click = "floating_only"
 follow_mouse_focus = True
 floats_kept_above = False
-cursor_warp = False
+cursor_warp = True
 
 # Hooks
 lock_file = "/tmp/qtile_lock_restart"
+
+# Disable window border for Albert
+@hook.subscribe.client_new
+def disable_albert_border(client):
+    if client.name and client.name == "Albert":
+        client.border_width = 0
+
+        # Magic shit that i dont even know how it works
+        def disable_paint(*args, **kwargs):
+            client.window.set_property(
+                '_NET_WM_BYPASS_COMPOSITOR', 1,
+                'CARDINAL', 32
+            )
+            client.window.configure(borderwidth=0)
+
+        client.paint_borders = disable_paint
+        client.window.configure(borderwidth=0)
 
 @hook.subscribe.startup
 def on_startup():

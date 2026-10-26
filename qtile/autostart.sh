@@ -12,6 +12,7 @@ fcitx5 &
 easyeffects -w &
 picom &
 vesktop -m &
+albert &
 xautolock -time 5 -locker "betterlockscreen -l blur --off 300" &
 "/opt/Keyboard Sounds/resources/.runtime/kbs" start -p mx-black -m g502x-wireless -c="-2,2" &
 ~/.venv/bin/volctl &
