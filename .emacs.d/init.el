@@ -36,7 +36,7 @@
 (load custom-file)
 
 ;; Fonts and alpha
-(add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font Mono-10"))
+(add-to-list 'default-frame-alist '(font . "Fira Code Nerd Font Mono-10"))
 (add-to-list 'default-frame-alist '(alpha-background . 90))
 
 ;; Required packages for this config
@@ -55,7 +55,10 @@
                'nord-theme
                'corfu
                'nerd-icons-corfu
-               'cape)
+               'cape
+               'copilot    ;; uhh dont ask why...
+               'gptel      ;; ...
+               'git-gutter-fringe)
 
 (add-to-list 'load-path "~/.emacs.d/custom-packages/")    ;; Custom packages live here
 
@@ -117,13 +120,13 @@
   (setq eglot-connect-timeout 600)
   (setq eglot-sync-connect 0)
   (setq eglot-max-file-watches 20000)
+  (setq eglot-code-action-indications nil)
   (add-to-list 'eglot-server-programs '(simpc-mode . ("clangd" "--background-index" "--header-insertion=never")))
   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
   (add-to-list 'eglot-stay-out-of 'company-backends)
   (add-to-list 'eglot-stay-out-of 'flymake)
   (add-hook 'zig-mode-hook
             (lambda ()
-              (setq zig-format-on-save nil)
               (add-to-list 'eglot-ignored-server-capabilities :documentFormattingProvider)
               (add-to-list 'eglot-ignored-server-capabilities :documentRangeFormattingProvider)))
 
@@ -133,6 +136,12 @@
               (add-to-list 'eglot-ignored-server-capabilities :documentRangeFormattingProvider))))
 
 ;; Disable flymake + set up eldoc
+;; Alright, so hear me out
+;; flymake is great!
+;; I dont hate flymake or anything
+;; But its too slow on my like 10 years old laptop
+;; And i just prefer error meesages from the compiler itself
+;; So i have to disable it
 (setq eldoc-box-max-pixel-width 600)
 (setq eldoc-box-max-pixel-height 400)
 (add-hook 'eglot-managed-mode-hook
@@ -147,12 +156,38 @@
 (add-hook 'zig-mode-hook 'eglot-ensure)
 (add-hook 'go-mode-hook 'eglot-ensure)
 
+;; gptel
+(setq gptel-model 'gemini-3.8-flash)
+(setq gptel-backend (gptel-make-gemini "Gemini"
+                      :key (getenv "GEMINI_API_KEY")
+                      :stream t
+                      :models '(gemini-3.8-flash)))
+
 ;; Fixing pyright
 (setq-default eglot-workspace-configuration
               '(:python (:pythonPath "/home/tr43212/.venv/bin/python")
                         :pyright (:analysis (:diagnosticMode "openFilesOnly"
                                                              :autoSearchPaths t
                                                              :useLibraryCodeForTypes t))))
+
+;; Disabling ZigFmt
+(add-hook 'zig-mode-hook (lambda ()
+  (zig-format-on-save-mode -1)))
+
+;; git-gutter
+(global-git-gutter-mode 1)
+(setq git-gutter:update-interval 1)
+(fringe-helper-define 'git-gutter-fr:added '(center repeated)
+  "XXX.....")
+(fringe-helper-define 'git-gutter-fr:modified '(center repeated)
+  "XXX.....")
+(fringe-helper-define 'git-gutter-fr:deleted '(center repeated)
+  "XXX.....")
+
+;; Support for Kotlin
+(setq treesit-language-source-alist
+      '((kotlin "https://github.com/fwcd/tree-sitter-kotlin")))
+(add-to-list 'auto-mode-alist '("\\.kts?\\'" . kotlin-ts-mode))
 
 ;; manual-indentation.el (custom package)
 ;; Provides mi/*
@@ -162,11 +197,6 @@
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (setq mi/tab-width 2)))
-
-;; Support for Kotlin
-(setq treesit-language-source-alist
-      '((kotlin "https://github.com/fwcd/tree-sitter-kotlin")))
-(add-to-list 'auto-mode-alist '("\\.kts?\\'" . kotlin-ts-mode))
 
 ;; better-control.el (custom package)
 ;; Provides bc/*
@@ -229,6 +259,11 @@
 (setq auto-revert-verbose t)
 (setq global-auto-revert-mode-non-file-buffer t)
 (setq tab-width 4)
+
+;; Alright, hear me out again
+;; I think everyone knows about this
+;; But Emacs' VC is just slow as hell
+;; I prefer git on the terminal :/
 (setq vc-handled-backends nil)
 
 ;; Disable annoying keys
@@ -237,7 +272,8 @@
 (global-unset-key (kbd "C-<down-mouse-1>"))
 (global-unset-key (kbd "C-<mouse-1>"))
 (global-unset-key (kbd "C-x C-z"))
-(global-unset-key (kbd "C-<return>"))
+(with-eval-after-load 'cua-base
+  (define-key cua-global-keymap (kbd "C-<return>") nil))
 
 ;; Keybinds
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
@@ -261,7 +297,9 @@
 (global-set-key (kbd "C-c <mouse-1>") 'kill-ring-save)
 
 ;; fido-mode
-(define-key icomplete-fido-mode-map (kbd "<tab>") 'icomplete-force-complete)
+(add-hook 'icomplete-minibuffer-setup-hook (lambda ()
+  (define-key icomplete-fido-mode-map (kbd "<tab>") 'icomplete-force-complete)
+  (define-key icomplete-fido-mode-map (kbd "<C-return>") 'icomplete-fido-exit)))
 
 ;; Dired
 (with-eval-after-load 'dired
@@ -275,13 +313,19 @@
   (define-key wdired-mode-map (kbd "C-x C-g") 'wdired-abort-changes))
 
 ;; better-control
-(global-set-key (kbd "M-<up>") 'bc/move-line-or-region-up)
-(global-set-key (kbd "M-<down>") 'bc/move-line-or-region-down)
 (global-set-key (kbd "C-S-a") 'bc/mark-whole-line-text)
 (global-set-key (kbd "C-<delete>") 'bc/delete-whole-line)
 (global-set-key (kbd "C-<backspace>") 'bc/backward-delete-word)
 (global-set-key (kbd "C-<left>") 'bc/backward-text)
 (global-set-key (kbd "C-<right>") 'bc/forward-text)
+
+;; Alright, hear me out (again)
+;; I used to code in VSCode
+;; And those muscle memory just couldn't
+;; yk idk
+;; i forgor the word for that
+(global-set-key (kbd "M-<up>") 'bc/move-line-or-region-up)
+(global-set-key (kbd "M-<down>") 'bc/move-line-or-region-down)
 
 ;; multiple-cursors
 (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)

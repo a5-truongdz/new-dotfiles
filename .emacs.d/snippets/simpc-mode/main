@@ -10,6 +10,9 @@
 #define lr2 l+(r-l)/2
 #define lm l,mid
 #define mr mid+1,r
+#define ilr ll i,ll l,ll r
+#define MOD 1000000007
+#define all(x) (x).begin(),(x).end()
 using namespace std;
 using ll = long long;
 

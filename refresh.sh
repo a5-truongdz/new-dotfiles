@@ -14,7 +14,7 @@ cp -r ~/.config/picom/ .
 cp -r ~/Scripts/ .
 cp -r ~/Documents/wallpaper.jpeg ./wallpaper.jpeg
 cp -r ~/.Xresources ./.Xresources
-cp -r /etc/environment ./etc/environment
+# cp -r /etc/environment ./etc/environment
 cp -r /etc/mkinitcpio.d/linux-zen.preset ./etc/mkinitcpio.d/linux-zen-preset
 
 cp -r ~/.emacs.d/init.el ./.emacs.d/init.el
