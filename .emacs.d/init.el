@@ -124,7 +124,7 @@
   (add-to-list 'eglot-server-programs '(simpc-mode . ("clangd" "--background-index" "--header-insertion=never")))
   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
   (add-to-list 'eglot-stay-out-of 'company-backends)
-  (add-to-list 'eglot-stay-out-of 'flymake)
+  ;; (add-to-list 'eglot-stay-out-of 'flymake)
   (add-hook 'zig-mode-hook
             (lambda ()
               (add-to-list 'eglot-ignored-server-capabilities :documentFormattingProvider)
@@ -146,7 +146,7 @@
 (setq eldoc-box-max-pixel-height 400)
 (add-hook 'eglot-managed-mode-hook
           (lambda ()
-            (flymake-mode -1)
+            ;; (flymake-mode -1)
             (eldoc-box-hover-at-point-mode)
             (eglot-inlay-hints-mode -1)))
 
@@ -259,6 +259,8 @@
 (setq auto-revert-verbose t)
 (setq global-auto-revert-mode-non-file-buffer t)
 (setq tab-width 4)
+
+(setq flymake-show-diagnostics-at-end-of-line 'short)
 
 ;; Alright, hear me out again
 ;; I think everyone knows about this
